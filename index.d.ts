@@ -5,10 +5,8 @@ import {
   Dispatch,
   MiddlewareAPI,
   StoreEnhancer,
-  bindActionCreators
+  Store
 } from 'redux';
-
-import { History } from "history";
 
 export interface onActionFunc {
   (api: MiddlewareAPI<any>): void,
@@ -29,10 +27,13 @@ export interface Hooks {
   extraEnhancers?: StoreEnhancer<any>[],
 }
 
-export type DvaOption = Hooks & {
-  namespacePrefixWarning?: boolean,
+export type HooksAndOpts = Hooks & {
   initialState?: Object,
-  history?: Object,
+}
+
+export interface CreateOpts {
+  initialState?: Object,
+  setupApp?: Function,
 }
 
 export interface EffectsCommandMap {
@@ -46,7 +47,7 @@ export interface EffectsCommandMap {
 
 export type Effect = (action: AnyAction, effects: EffectsCommandMap) => void;
 export type EffectType = 'takeEvery' | 'takeLatest' | 'watcher' | 'throttle';
-export type EffectWithType = [Effect, { type: EffectType }];
+export type EffectWithType = [Effect, { type : EffectType }];
 export type Subscription = (api: SubscriptionAPI, done: Function) => void;
 export type ReducersMapObjectWithEnhancer = [ReducersMapObject, ReducerEnhancer];
 
@@ -71,13 +72,8 @@ export interface Model {
   subscriptions?: SubscriptionsMapObject,
 }
 
-export interface RouterAPI {
-  history: History,
-  app: DvaInstance,
-}
-
-export interface Router {
-  (api?: RouterAPI): JSX.Element | Object,
+export interface DvaStore extends Store<any> {
+  runSaga: (saga: any) => any
 }
 
 export interface DvaInstance {
@@ -94,46 +90,10 @@ export interface DvaInstance {
    * @param model
    */
   model: (model: Model) => void,
-
-  /**
-   * Unregister a model.
-   *
-   * @param namespace
-   */
-  unmodel: (namespace: string) => void,
-
-  /**
-   * Config router. Takes a function with arguments { history, dispatch },
-   * and expects router config. It use the same api as react-router,
-   * return jsx elements or JavaScript Object for dynamic routing.
-   *
-   * @param router
-   */
-  router: (router: Router) => void,
-
-  /**
-   * Start the application. Selector is optional. If no selector
-   * arguments, it will return a function that return JSX elements.
-   *
-   * @param selector
-   */
-  start: (selector?: HTMLElement | string) => any,
+  start: () => any,
+  _models: any,
+  _plugins: Plugin,
+  _store: DvaStore
 }
 
-export default function dva(opts?: DvaOption): DvaInstance;
-
-export { bindActionCreators };
-
-export {
-  connect, connectAdvanced, useSelector, useDispatch, useStore,
-  DispatchProp, shallowEqual
-} from 'react-redux';
-
-import * as routerRedux from 'connected-react-router';
-export { routerRedux };
-
-import * as fetch from 'isomorphic-fetch';
-export { fetch };
-
-import * as router from 'react-router-dom';
-export { router };
+export function create(hooksAndOpts?: HooksAndOpts, createOpts?: CreateOpts): DvaInstance;

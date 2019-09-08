@@ -1,45 +1,53 @@
 {
-  "private": true,
-  "scripts": {
-    "build": "father build",
-    "doc:dev": "./website/node_modules/.bin/vuepress dev ./docs",
-    "doc:deploy": "rm -rf ./website/yarn.lock && cd ./website && npm run deploy && cd -",
-    "changelog": "lerna-changelog",
-    "test": "npm run debug -- --coverage",
-    "debug": "umi-test",
-    "coveralls": "cat ./coverage/lcov.info | coveralls",
-    "lint": "eslint --ext .js packages",
-    "precommit": "lint-staged",
-    "publish": "./scripts/publish.js",
-    "bootstrap": "lerna bootstrap"
+  "name": "dva-core",
+  "version": "2.0.0",
+  "description": "The core lightweight library for dva, based on redux and redux-saga.",
+  "main": "dist/index.js",
+  "module": "dist/index.esm.js",
+  "sideEffects": false,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dvajs/dva"
+  },
+  "homepage": "https://github.com/dvajs/dva",
+  "keywords": [
+    "dva",
+    "alibaba",
+    "redux",
+    "redux-saga",
+    "elm",
+    "framework",
+    "frontend"
+  ],
+  "authors": [
+    "chencheng <sorrycc@gmail.com> (https://github.com/sorrycc)"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dvajs/dva/issues"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.0.0",
+    "flatten": "^1.0.2",
+    "global": "^4.3.2",
+    "invariant": "^2.2.1",
+    "is-plain-object": "^2.0.3",
+    "redux-saga": "^0.16.0",
+    "warning": "^3.0.0"
+  },
+  "peerDependencies": {
+    "redux": "4.x"
   },
   "devDependencies": {
-    "babel-eslint": "^9.0.0",
-    "chalk": "^2.3.2",
-    "coveralls": "^3.0.0",
-    "eslint": "^5.6.0",
-    "eslint-config-airbnb": "^17.1.0",
-    "eslint-plugin-import": "^2.14.0",
-    "eslint-plugin-jsx-a11y": "^6.0.2",
-    "eslint-plugin-react": "^7.11.1",
-    "eslint-config-prettier": "^4.3.0",
-    "eslint-plugin-prettier": "^3.1.0",
-    "husky": "^0.14.3",
-    "lerna": "^3.4.0",
-    "lerna-changelog": "^0.8.0",
-    "lint-staged": "^7.2.2",
-    "prettier": "^1.14.3",
-    "react": "^16.8.4",
-    "react-dom": "^16.8.4",
-    "react-testing-library": "^6.0.0",
-    "shelljs": "^0.8.1",
-    "father": "^2.6.6",
-    "umi-test": "^1.5.2"
+    "mm": "^2.5.0",
+    "redux": "^4.0.1"
   },
-  "lint-staged": {
-    "*.js": [
-      "prettier --trailing-comma all --single-quote --write",
-      "git add"
-    ]
-  }
+  "files": [
+    "dist",
+    "lib",
+    "src",
+    "index.js",
+    "saga.js",
+    "*.d.ts"
+  ]
 }
