@@ -294,8 +294,9 @@ function createStore (_ref) {
 function prefixType(type, model) {
   var prefixedType = "".concat(model.namespace).concat(NAMESPACE_SEP).concat(type);
   var typeWithoutAffix = prefixedType.replace(/\/@@[^/]+?$/, '');
+  var reducer = Array.isArray(model.reducers) ? model.reducers[0][typeWithoutAffix] : model.reducers && model.reducers[typeWithoutAffix];
 
-  if (model.reducers && model.reducers[typeWithoutAffix] || model.effects && model.effects[typeWithoutAffix]) {
+  if (reducer || model.effects && model.effects[typeWithoutAffix]) {
     return prefixedType;
   }
 
